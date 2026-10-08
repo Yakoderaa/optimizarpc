@@ -121,8 +121,7 @@ function Update-App {
       Set-Status "Ya estas actualizado ($CurrentVersion)"
       [Windows.Forms.MessageBox]::Show("Ya tenes la ultima version ($CurrentVersion).","Actualizaciones");return
     }
-    $answer=[Windows.Forms.MessageBox]::Show(("Nueva version: $($m.version)."+(NL)+(NL)+$m.notes+(NL)+(NL)+"Descargar e instalar ahora?"),"Actualizacion disponible",[Windows.Forms.MessageBoxButtons]::YesNo,[Windows.Forms.MessageBoxIcon]::Information)
-    if($answer -ne [Windows.Forms.DialogResult]::Yes){return}
+    [Windows.Forms.MessageBox]::Show(("Nueva version: $($m.version) encontrada."+(NL)+(NL)+$m.notes+(NL)+(NL)+"La descarga e instalacion comenzaran automaticamente."),"Actualizacion disponible",[Windows.Forms.MessageBoxButtons]::OK,[Windows.Forms.MessageBoxIcon]::Information)
     $tmp=Join-Path $env:TEMP ("OptimizarPC-update-"+[guid]::NewGuid());New-Item -ItemType Directory -Force $tmp | Out-Null
     $zip=Join-Path $tmp 'package.zip';Invoke-WebRequest -Uri $m.packageUrl -OutFile $zip -UseBasicParsing
     if($m.sha256){$hash=(Get-FileHash $zip -Algorithm SHA256).Hash.ToLower();if($hash -ne $m.sha256.ToLower()){throw "La verificacion SHA-256 del paquete fallo."}}
