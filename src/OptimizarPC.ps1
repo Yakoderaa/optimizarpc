@@ -134,7 +134,7 @@ param([string]$Source,[string]$Target,[string]$ScriptPath,[string]$Tmp)
 Start-Sleep -Seconds 2
 New-Item -ItemType Directory -Force $Target | Out-Null
 robocopy $Source $Target /E /R:2 /W:1 /NFL /NDL /NJH /NJS | Out-Null
-Start-Process -FilePath powershell.exe -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File',$ScriptPath)
+Start-Process -FilePath powershell.exe -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File',(Join-Path $Target 'src\OptimizarPC.ps1'))
 Remove-Item $Tmp -Recurse -Force -ErrorAction SilentlyContinue
 '@
     Set-Content -Path $updater -Value $updaterCode -Encoding UTF8
